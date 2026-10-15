@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Squish — Make Any File Smaller</title>
+<meta name="description" content="Shrink videos, audio, photos, PDFs and Office files without losing quality. Fit any video under Discord's 10 MB limit. Free for Windows.">
+<meta property="og:title" content="Squish — Make Any File Smaller">
+<meta property="og:description" content="Smaller files, same quality. Free for Windows.">
+<meta property="og:image" content="screenshot.jpg">
+<link rel="icon" href="favicon.png">
+<style>
+:root {
+  --bg: #100c10; --card: rgba(255,255,255,.035); --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.14);
+  --text: #fbeff2; --muted: #a8949b; --faint: #6e5d63; --violet: #ff5e8a; --violet-2: #ffb4c7; --cyan: #ff8a5c;
+  --grad: linear-gradient(135deg, #ff5e8a 0%, #ff8a5c 55%, #ffc46b 100%);
+  --font: "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+  --display: "Segoe UI Variable Display", "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; }
+.bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.blob { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .5; }
+.b1 { width: 720px; height: 720px; left: -220px; top: -280px; background: radial-gradient(circle, #9d174d, transparent 70%); animation: drift 26s ease-in-out infinite alternate; }
+.b2 { width: 640px; height: 640px; right: -200px; top: 380px; background: radial-gradient(circle, #9a3412, transparent 70%); animation: drift 34s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform: translate(70px, 50px) scale(1.08); } }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 19px; }
+.brand img { width: 32px; height: 32px; }
+.tag { font-size: 11px; font-weight: 650; letter-spacing: .6px; text-transform: uppercase; color: var(--violet-2); background: rgba(255,94,138,.14); border: 1px solid rgba(255,94,138,.3); padding: 2px 8px; border-radius: 99px; }
+.nav-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
+.nav-links a { text-decoration: none; transition: color .15s; }
+.nav-links a:hover { color: var(--text); }
+
+.hero { text-align: center; padding: 70px 0 40px; }
+.hero .app-icon { width: 104px; height: 104px; filter: drop-shadow(0 18px 40px rgba(255,94,138,.55)); animation: float 6s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-8px); } }
+h1 { font-family: var(--display); font-size: clamp(40px, 7vw, 72px); line-height: 1.04; letter-spacing: -1.5px; margin: 26px 0 18px; font-weight: 750; }
+h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { max-width: 620px; margin: 0 auto; color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); }
+.cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 11px; padding: 16px 30px; border-radius: 16px; background: var(--grad); color: #1a0d12; font-weight: 650; font-size: 17px; text-decoration: none; border: 0; cursor: pointer; box-shadow: 0 14px 40px -10px rgba(255,94,138,.85); transition: transform .15s, filter .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 20px 50px -10px rgba(255,94,138,.95); }
+.btn svg { width: 22px; height: 22px; }
+.btn.ghost { background: var(--card); border: 1px solid var(--line-2); box-shadow: none; font-size: 15px; padding: 12px 22px; }
+.meta { font-size: 13.5px; color: var(--faint); }
+.meta b { color: var(--muted); font-weight: 600; }
+
+.shot { position: relative; margin: 60px auto 0; max-width: 1040px; }
+.shot::before { content: ""; position: absolute; inset: 8% 10% -4%; background: var(--grad); filter: blur(80px); opacity: .35; z-index: -1; border-radius: 40px; }
+.shot img { width: 100%; display: block; border-radius: 16px; border: 1px solid var(--line-2); box-shadow: 0 40px 100px -30px rgba(0,0,0,.9); }
+
+section { padding: 100px 0 0; }
+.eyebrow { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-2); }
+h2 { text-align: center; font-family: var(--display); font-size: clamp(30px, 4.5vw, 44px); letter-spacing: -.8px; margin: 10px 0 14px; line-height: 1.1; }
+.sub { text-align: center; color: var(--muted); max-width: 560px; margin: 0 auto 46px; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; transition: border-color .2s, transform .2s; }
+.card:hover { border-color: rgba(167,139,250,.35); transform: translateY(-3px); }
+.ico { width: 44px; height: 44px; border-radius: 13px; background: var(--grad); display: grid; place-items: center; margin-bottom: 18px; box-shadow: 0 8px 22px -8px rgba(255,94,138,.9); }
+.ico svg { width: 22px; height: 22px; stroke: #1a0d12; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.card h3 { margin: 0 0 8px; font-family: var(--display); font-size: 18.5px; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+.step { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px 24px 24px; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; top: -16px; left: 24px; width: 34px; height: 34px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; font-weight: 750; font-family: var(--display); color: #1a0d12; box-shadow: 0 6px 18px -6px rgba(255,94,138,.9); }
+.step h3 { margin: 6px 0 8px; font-family: var(--display); font-size: 18px; }
+.step p { margin: 0; color: var(--muted); font-size: 15px; }
+.note { margin: 18px auto 0; max-width: 760px; display: flex; gap: 14px; align-items: flex-start; padding: 16px 20px; border-radius: 16px; background: rgba(255,94,138,.06); border: 1px solid rgba(255,94,138,.25); font-size: 14.5px; color: #ffd8e2; }
+.note svg { flex: none; width: 22px; height: 22px; stroke: var(--cyan); fill: none; stroke-width: 2; margin-top: 1px; }
+kbd { font-family: inherit; font-size: 13px; padding: 1px 7px; border-radius: 6px; background: rgba(255,255,255,.08); border: 1px solid var(--line-2); }
+
+.faq { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 4px 22px; }
+summary { cursor: pointer; list-style: none; padding: 16px 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-size: 22px; color: var(--muted); transition: transform .2s; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+
+.final { text-align: center; padding: 110px 0 40px; }
+.final h2 { margin-bottom: 26px; }
+footer { border-top: 1px solid var(--line); margin-top: 80px; padding: 28px 0 40px; display: flex; justify-content: space-between; color: var(--faint); font-size: 14px; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 860px) { .grid, .steps { grid-template-columns: 1fr; } .nav-links { display: none; } .steps { gap: 30px; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg"><i class="blob b1"></i><i class="blob b2"></i></div>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><img src="favicon.png" alt="">Squish <span class="tag">File Shrinker</span></a>
+    <div class="nav-links"><a href="#features">Features</a><a href="#install">Install</a><a href="#faq">FAQ</a></div>
+  </nav>
+
+  <header class="hero">
+    <img class="app-icon" src="icon.png" alt="Squish app icon">
+    <h1>Smaller files.<br><span class="grad">Same quality.</span></h1>
+    <p class="lede">Squish shrinks videos, audio, photos, PDFs and Office files to the smallest size that still looks and sounds the same — or squeezes a video under Discord's 10 MB limit. Free, offline, no limits.</p>
+    <div class="cta">
+      <a class="btn dl" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        Download for Windows
+      </a>
+      <span class="meta"><b>Version <span class="ver">1.0.0</span></b> · Windows 10 &amp; 11 · 64-bit · ~130 MB</span>
+    </div>
+    <div class="shot"><img src="screenshot.jpg" alt="Squish showing a list of files shrunk by up to 98%" loading="eager"></div>
+  </header>
+
+  <section id="features">
+    <div class="eyebrow">Features</div>
+    <h2>One app for every "file too big"</h2>
+    <p class="sub">Drop in one file or a whole folder. Everything runs on your PC — nothing is uploaded.</p>
+    <div class="grid">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div><h3>Smart mode</h3><p>Finds the smallest size with no visible or audible difference — and actually measures every result to make sure.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="13" height="14" rx="2.5"/><path d="M16 10l5-3v10l-5-3"/></svg></div><h3>Fit under 10 MB</h3><p>Pick a size — 10 MB for Discord, 25 MB for email — and Squish hits it, lowering quality only as much as it has to.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div><h3>Almost everything</h3><p>Videos, audio, JPG, PNG, WebP, GIF, BMP, TIFF, PDFs, and Word, PowerPoint &amp; Excel files.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 12h8"/></svg></div><h3>Right-click anything</h3><p>"Squish" or "Squish to fit 10 MB" right in File Explorer. The smaller copy lands next to the original.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Never makes it worse</h3><p>If a file can't get smaller, Squish keeps your original. Replace mode sends old files to the Recycle Bin, never deletes them.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>100% offline</h3><p>No account, no uploads, no file limits. Your files never leave your PC.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="eyebrow">Install</div>
+    <h2>Up and running in a minute</h2>
+    <p class="sub">Three steps. No account needed.</p>
+    <div class="steps">
+      <div class="step"><h3>Download</h3><p>Click <b>Download for Windows</b> above. You'll get <b>Squish-Setup.exe</b>.</p></div>
+      <div class="step"><h3>Run the installer</h3><p>Open it and click through the setup — pick a folder or keep the default. Squish opens when it's done.</p></div>
+      <div class="step"><h3>Squish it</h3><p>Drop in files or a folder — or right-click any file and choose <b>Squish</b>. That's it.</p></div>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+      <span>If Windows shows <b>"Windows protected your PC"</b>, click <kbd>More info</kbd> then <kbd>Run anyway</kbd>. That appears for new apps from independent developers that aren't code-signed yet.</span>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions</h2>
+    <div class="faq" style="margin-top:40px">
+      <details><summary>Will my files look or sound worse?</summary><p>Not in Smart mode. Squish compares each result to the original and only keeps versions you can't tell apart. "Fit under" mode lowers quality only as much as needed to hit your size.</p></details>
+      <details><summary>Does it change my original files?</summary><p>No. Squished copies are saved next to the originals as "name (squished)". If you turn on "Replace originals", the old files go to the Recycle Bin, so you can always get them back.</p></details>
+      <details><summary>How much smaller do files get?</summary><p>It depends on the file. Phone videos and screen recordings often shrink 50–90%, WAV audio about 85%, screenshots up to 98%, and big PDFs or Word files often more than half.</p></details>
+      <details><summary>Why did it say "already as small as it gets"?</summary><p>Some files are already squeezed hard — low-quality MP3s, ZIPs, videos downloaded from social media. Squish won't make them bigger or worse, so it keeps the original.</p></details>
+      <details><summary>Where's the right-click option on Windows 11?</summary><p>Right-click a file, choose <b>Show more options</b>, then <b>Squish</b> or <b>Squish to fit 10 MB</b>.</p></details>
+    </div>
+  </section>
+
+  <div class="final">
+    <h2>Free up space in seconds.</h2>
+    <a class="btn dl" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download for Windows</a>
+  </div>
+
+  <footer><span>© 2026 Trivisto · Squish</span><span><a class="gh" href="#">Release notes &amp; older versions</a></span></footer>
+</div>
+
+<script>
+// Works automatically on GitHub Pages: https://USERNAME.github.io/REPO/
+// -> download link: https://github.com/USERNAME/REPO/releases/latest/download/Squish-Setup.exe
+(function () {
+  var host = location.hostname, m = host.match(/^([^.]+)\.github\.io$/);
+  if (!m) return;
+  var user = m[1], repo = location.pathname.split('/').filter(Boolean)[0] || (user + '.github.io');
+  var base = 'https://github.com/' + user + '/' + repo + '/releases';
+  document.querySelectorAll('a.dl').forEach(function (a) { a.href = base + '/latest/download/Squish-Setup.exe'; });
+  document.querySelectorAll('a.gh').forEach(function (a) { a.href = base; });
+  fetch('https://api.github.com/repos/' + user + '/' + repo + '/releases/latest')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) { if (j && j.tag_name) document.querySelectorAll('.ver').forEach(function (e) { e.textContent = j.tag_name.replace(/^v/, ''); }); })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
